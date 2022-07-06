@@ -11,4 +11,12 @@ class Accunt extends Controller
         $this->view('templates/footer');
     }
 
+    public function activation()
+    {
+        $data['judul'] = 'Halaman Activation Accunt';
+        $data['active'] = 'accunt';
+        $this->view('templates/header', $data);
+        $this->view('Accunt/activation');
+        $this->view('templates/footer');
+    }
 }
