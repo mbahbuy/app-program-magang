@@ -15,7 +15,7 @@ class Accunt extends Controller
 
     public function verification()
     {
-        $token = $this->getToken();
+        $token = $this->getURL();
         // var_dump( $token[2] );
         if( $this->model( 'User_model' )->activationAccunt( $token[2] ) > 0 )
         {
@@ -26,7 +26,7 @@ class Accunt extends Controller
             ";
             $this->view( 'templates/footer' );
         } else {
-            echo 'ada yang g beres';
+            echo 'Link Verifikasi sudah tidak berlaku.';
         }
     }
 
@@ -76,12 +76,4 @@ class Accunt extends Controller
         }
     }
 
-    public function getToken(){
-        if( isset($_GET['url']) ){
-            $token = rtrim($_GET['url'], '/');
-            $token = filter_var($token, FILTER_SANITIZE_URL);
-            $token = explode('/', $token);
-            return $token;
-        }
-    }
 }
