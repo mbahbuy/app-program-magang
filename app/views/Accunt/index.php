@@ -55,16 +55,13 @@ document.getElementById( 'daftar' ).onclick = function()
 {
     var pass1 = document.getElementById( 'pass1' ).value;
     var pass2 = document.getElementById( 'pass2' ).value;
-    if( pass1 == pass2 )
+    if( pass1 === pass2 )
     {
-        var data = {
-            user_name : document.getElementById( 'username' ).value,
-            email : document.getElementById( 'email' ).value,
-            no_hp : document.getElementById( 'no_hp' ).value,
-            pass : pass1,
-            alamat : document.getElementById( 'alamat' ).value
-        };
-        var dataJson = JSON.stringify( data );
+        var user_name = document.getElementById( 'username' ).value;
+        var email = document.getElementById( 'email' ).value;
+        var no_hp = document.getElementById( 'no_hp' ).value;
+        var pass = pass1;
+        var alamat = document.getElementById( 'alamat' ).value;
         var xhtml = new XMLHttpRequest();
         xhtml.onreadystatechange = function()
         {
@@ -76,8 +73,15 @@ document.getElementById( 'daftar' ).onclick = function()
             };
         };
         xhtml.open( "POST", "<?= BASEURL;?>accunt/register", true );
-        xhtml.setRequestHeader( "Content-Type", "application/json" );
-        xhtml.send( dataJson );
+        xhtml.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
+        xhtml.send( "user_name=" + user_name +
+        "&email=" + email +
+        "&no_hp=" + no_hp +
+        "&pass=" + pass +
+        "&alamat=" + alamat 
+        );
+    } else {
+        notif( null, 'danger', 'Password confirm tidak sama' );
     }
 }
 
