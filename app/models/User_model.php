@@ -25,11 +25,11 @@ class User_model {
     {
         $query = "INSERT INTO `user`( `user_name`, `email`, `no_hp`, `pass`, `alamat`, `token` )
                     VALUES
-                    ( :user, :email, :no_hp, :pass, :alamat, :token )
+                    ( :user_name, :email, :no_hp, :pass, :alamat, :token )
         ";
 
         $this->db->query( $query );
-        $this->db->bind( 'user', $data['user_name'] );
+        $this->db->bind( 'user_name', $data['user_name'] );
         $this->db->bind( 'email', $data['email'] );
         $this->db->bind( 'no_hp', $data['no_hp'] );
         $this->db->bind( 'pass', password_hash( $data['pass'] , PASSWORD_DEFAULT ));
@@ -39,7 +39,6 @@ class User_model {
         $this->db->execute();
 
         return $this->db->rowCount();
-
     }
 
     // public function hapusDataMahasiswa( $id ) {
