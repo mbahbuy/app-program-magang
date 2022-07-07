@@ -43,11 +43,16 @@ class User_model {
 
     public function activationAccunt( $paramtoken )
     {
-        $this->db->query( "UPDATE " . $this->table . " SET active = :active WHERE token = :token" );
-        $this->db->bind( 'active', 1 );
-        $this->db->bind( 'token', $paramtoken );
-        $this->db->execute();
-        return $this->db->rowCount();
+        if( empty( $paramtoken ) )
+        {
+            return null;
+        } else {
+            $this->db->query( "UPDATE " . $this->table . " SET active = :active WHERE token = :token" );
+            $this->db->bind( 'active', 1 );
+            $this->db->bind( 'token', $paramtoken );
+            $this->db->execute();
+            return $this->db->rowCount();
+        }
     }
 
     // public function hapusDataMahasiswa( $id ) {

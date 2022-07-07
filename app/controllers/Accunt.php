@@ -13,20 +13,36 @@ class Accunt extends Controller
         $this->view('templates/footer');
     }
 
-    public function verification()
+    public function verification( $token = null )
     {
-        $token = $this->getURL();
-        // var_dump( $token[2] );
-        if( $this->model( 'User_model' )->activationAccunt( $token[2] ) > 0 )
+        if( $token == null )
         {
             $data['judul'] = 'Halaman Accunt';
             $data['active'] = 'accunt';
             $this->view('templates/header', $data);
-            echo "<div class='container'><div class='alert alert-success alert-dismissible fade show' role='alert'>Accunt Anda berhasil verifikasi. Silahkan <a href='" . BASEURL . "accunt'>LOG IN</a></div></div>
+            echo "
+            <div class='container'><div class='alert alert-danger alert-dismissible fade show' role='alert'>-----------------</div></div>
             ";
             $this->view( 'templates/footer' );
         } else {
-            echo 'Link Verifikasi sudah tidak berlaku.';
+            
+            if( $this->model( 'User_model' )->activationAccunt( $token ) > 0 )
+            {
+                $data['judul'] = 'Halaman Accunt';
+                $data['active'] = 'accunt';
+                $this->view('templates/header', $data);
+                echo "<div class='container'><div class='alert alert-success alert-dismissible fade show' role='alert'>Accunt Anda berhasil verifikasi. Silahkan <a href='" . BASEURL . "accunt'>LOG IN</a></div></div>
+                ";
+                $this->view( 'templates/footer' );
+            } else {
+                $data['judul'] = 'Halaman Accunt';
+                $data['active'] = 'accunt';
+                $this->view('templates/header', $data);
+                echo "
+                <div class='container'><div class='alert alert-danger alert-dismissible fade show' role='alert'>Link Verifikasi sudah tidak berlaku.</div></div>
+                ";
+                $this->view( 'templates/footer' );
+            }
         }
     }
 
