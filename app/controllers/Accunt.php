@@ -6,11 +6,28 @@ class Accunt extends Controller
 {
     public function index()
     {
-        $data['judul'] = 'Halaman Accunt';
-        $data['active'] = 'accunt';
-        $this->view('templates/header', $data);
-        $this->view('Accunt/index');
-        $this->view('templates/footer');
+        if( isset( $_COOKIE['username'] ) && isset( $_COOKIE['token'] ) && isset( $_COOKIE['role'] ) )
+        {
+            if( $this->model( 'User_model' )->checkAccunt( $_COOKIE['token'] ) > 0 )
+            {
+                $data['judul'] = 'Halaman Accunt';
+                $data['active'] = 'accunt';
+                $data['username'] = $_COOKIE['accunt']['username'];
+                $data['token'] = $_COOKIE['accunt']['token'];
+                $data['role'] = $_COOKIE['accunt']['role'];
+                $this->view('templates/header', $data);
+                $this->view('Accunt/setting', $data);
+                $this->view('templates/footer');
+            } else {
+                echo 'Accunt ILEGAL.';
+            }
+        } else {
+            $data['judul'] = 'Halaman Accunt';
+            $data['active'] = 'accunt';
+            $this->view('templates/header', $data);
+            $this->view('Accunt/index');
+            $this->view('templates/footer');
+        }
     }
 
     public function verification( $token = null )
@@ -90,6 +107,25 @@ class Accunt extends Controller
             $alert['text'] = 'data tidak tersimpan, ada yang salah';
             echo json_encode($alert);
         }
+    }
+
+    public function login()
+    {
+        $data = $this->model( 'User_model' )->loginAccunt( $_POST );
+        echo json_encode( [ 'result' => $data] );
+        // if( $data > 0 )
+        // {
+        //     $token = $this->model( 'User_model' )->checkAccunt( $data['token'] );
+        //     // setcookie( 'username', $data['user_name'], time() + (86400 * 30 * 365) );
+        //     // setcookie( 'token', $data['token'], time() + (86400 * 30 * 365) );
+        //     // setcookie( 'role', $data['role'], time() + (86400 * 30 * 365) );
+        //     // $alert['data'] = 'sudah login';
+        //     echo json_encode( $token );
+        // } else {
+        //     $alert['alert'] = 'danger';
+        //     $alert['text'] = 'email/sandi yang anda masukkan salah.';
+        //     echo json_encode($alert);
+        // }
     }
 
 }
