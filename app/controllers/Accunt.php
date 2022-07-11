@@ -12,9 +12,9 @@ class Accunt extends Controller
             {
                 $data['judul'] = 'Halaman Accunt';
                 $data['active'] = 'accunt';
-                $data['username'] = $_COOKIE['accunt']['username'];
-                $data['token'] = $_COOKIE['accunt']['token'];
-                $data['role'] = $_COOKIE['accunt']['role'];
+                $data['username'] = $_COOKIE['username'];
+                $data['token'] = $_COOKIE['token'];
+                $data['role'] = $_COOKIE['role'];
                 $this->view('templates/header', $data);
                 $this->view('Accunt/setting', $data);
                 $this->view('templates/footer');
@@ -24,8 +24,11 @@ class Accunt extends Controller
         } else {
             $data['judul'] = 'Halaman Accunt';
             $data['active'] = 'accunt';
+            $data['username'] = $_COOKIE['username'];
+            $data['token'] = $_COOKIE['token'];
+            $data['role'] = $_COOKIE['role'];
             $this->view('templates/header', $data);
-            $this->view('Accunt/index');
+            $this->view('Accunt/index', $data);
             $this->view('templates/footer');
         }
     }
@@ -111,21 +114,28 @@ class Accunt extends Controller
 
     public function login()
     {
-        $data = $this->model( 'User_model' )->loginAccunt( $_POST );
-        echo json_encode( [ 'result' => $data] );
-        // if( $data > 0 )
-        // {
-        //     $token = $this->model( 'User_model' )->checkAccunt( $data['token'] );
-        //     // setcookie( 'username', $data['user_name'], time() + (86400 * 30 * 365) );
-        //     // setcookie( 'token', $data['token'], time() + (86400 * 30 * 365) );
-        //     // setcookie( 'role', $data['role'], time() + (86400 * 30 * 365) );
-        //     // $alert['data'] = 'sudah login';
-        //     echo json_encode( $token );
-        // } else {
-        //     $alert['alert'] = 'danger';
-        //     $alert['text'] = 'email/sandi yang anda masukkan salah.';
-        //     echo json_encode($alert);
-        // }
+        $datapass = $this->model( 'User_model' )->getPasswordAccunt( $_POST );
+        if( password_verify( $_POST['password'], $datapass['pass'] ) )
+        {
+            $cookies = $this->model( 'User_model' )->getDataCookies( $datapass['pass'] );
+            // setcookie( 'username', $cookies['user_name'], ['samesite' => 'None', 'secure' => true] );
+            // setcookie( 'token', $cookies['token'], ['samesite' => 'None', 'secure' => true] );
+            // setcookie( 'role', $cookies['role'], ['samesite' => 'None', 'secure' => true] );
+            // header('Set-Cookie: username=' . $cookies['user_name'] . '; SameSite=None; Secure', false);
+            // header('Set-Cookie: token=' . $cookies['token'] . '; SameSite=None; Secure', false);
+            // header('Set-Cookie: role=' . $cookies['role'] . '; SameSite=None; Secure', false);
+            // setCookie( 'username', $cookies['user_name'] );
+            // setCookie( 'token', $cookies['token'] );
+            // setCookie( 'role', $cookies['role'] );
+            $alert['data'] = 'sudah login';
+            $alert['alert'] = 'success';
+            $alert['text'] = 'anda sudah login';
+            echo json_encode( $alert );
+        } else {
+            $alert['alert'] = 'danger';
+            $alert['text'] = 'email/sandi yang anda masukkan salah.';
+            echo json_encode($alert);
+        }
     }
 
 }

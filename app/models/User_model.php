@@ -15,25 +15,33 @@ class User_model {
         return $this->db->resultSet();
     }
 
-    // fungsi login
-    public function loginAccunt( $data )
+    // fungsi ambil password value
+    public function getPasswordAccunt( $data )
     {
-        $sql = 'SELECT token FROM  ' . $this->table . ' WHERE (user_name=:email_user OR email=:email_user) AND pass=:password AND active=:active';
+        $sql = 'SELECT pass FROM  ' . $this->table . ' WHERE (user_name=:email_user OR email=:email_user) AND active=:active';
 
         $this->db->query( $sql );
         $this->db->bind( 'email_user', $data['email_user'] );
-        $this->db->bind( 'password', password_hash( $data['password'], PASSWORD_DEFAULT) );
         $this->db->bind( 'active', 1 );
 
-        return password_hash( $data['password'], PASSWORD_DEFAULT);
+        return $this->db->single();
     }
 
-    // fungsi check accunt already exist and get data
+    // fungsi check accunt is exist
     public function checkAccunt( $param )
     {
-        $this->db->query( 'SELECT user_name, token, role FROM ' . $this->table . ' WHERE (token=:token AND active=:active)' );
-        $this->db->bind( "token", $param );
-        $this->db->bind( "active", 1 );
+        $this->db->query( 'SELECT * FROM ' . $this->table . ' WHERE token=:token AND active=:active' );
+        $this->db->bind( 'token', $param );
+        $this->db->bind( 'active', 1 );
+
+        return $this->db->single();
+    }
+
+    // fungsi ambil data buat cookie
+    public function getDataCookies( $param )
+    {
+        $this->db->query( 'SELECT user_name, token, role FROM ' . $this->table . ' WHERE pass=:pass' );
+        $this->db->bind( "pass", $param );
 
         return $this->db->single();
     }
@@ -73,5 +81,14 @@ class User_model {
             return $this->db->rowCount();
         }
     }
+
+    // fungsi setcookie
+    // public function setCookie( $cookieName, $cookieValue )
+    // {
+    //     setcookie( $cookieName, $cookieValue, ['samesite' => 'Lax']);
+    //     setcookie( $cookieName, $cookieValue, ['samesite' => 'None', 'secure' => true]);
+    //     header('Set-Cookie: ' . $cookieName . '=' . $cookieValue . '; SameSite=Lax', false);
+    //     header('Set-Cookie: ' . $cookieName . '=' . $cookieValue . '; SameSite=None; Secure', false);
+    // }
 
 }

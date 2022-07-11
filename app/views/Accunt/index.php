@@ -16,6 +16,10 @@
 
             <button type="button" class="btn btn-primary" id="login">Log In</button>
 
+            <p>ada accunt dengan username : <?= $data['username'];?></p>
+            <p>ada accunt dengan token : <?= $data['token'];?></p>
+            <p>ada accunt dengan role : <?= $data['role'];?></p>
+
         </div>
 
         <div class="col">
@@ -71,11 +75,7 @@ function notifLogin( data = null, alert = 'danger', texts = '' )
         text.classList.add('container');
         notifPlace.appendChild(text);
     } else{
-        var notifPlace = document.getElementById('notif');
-        var text = document.createElement('div');
-        text.innerHTML = '<div class="alert alert-'+ alert +' alert-dismissible fade show" role="alert">'+ texts + '</div>';
-        text.classList.add('container');
-        notifPlace.appendChild(text);
+        location.href = '<?= BASEURL;?>';
     }
 };
 function notif( data = null, alert = 'danger', texts = '' )
@@ -88,7 +88,11 @@ function notif( data = null, alert = 'danger', texts = '' )
         text.classList.add('container');
         notifPlace.appendChild(text);
     } else{
-        location.href = '<?= BASEURL;?>';
+        var notifPlace = document.getElementById('notif');
+        var text = document.createElement('div');
+        text.innerHTML = '<div class="alert alert-'+ alert +' alert-dismissible fade show" role="alert">'+ texts + '</div>';
+        text.classList.add('container');
+        notifPlace.appendChild(text);
     }
 };
 document.getElementById( 'daftar' ).onclick = function()
@@ -135,7 +139,7 @@ document.getElementById( 'login' ).onclick = function()
         if( this.readyState == 4 && this.status == 200 )
         {
             var dataphp = JSON.parse(this.responseText);
-            notifLogin( dataphp.data, dataphp.alert, dataphp.text );
+            // notifLogin( dataphp.data, dataphp.alert, dataphp.text );
             // alert( this.responseText );
         };
     };
