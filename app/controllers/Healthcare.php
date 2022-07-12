@@ -13,13 +13,14 @@ class Healthcare extends Controller
 
     public function getDataHealthcare()
     {
-        $array = $this->model( 'Healthcare_model' )->getAllDataHealthcare();
+        $array = $this->model( 'Get_Data_Produk_model' )->getAllDataHealthcare();
         foreach( $array as $x )
         {
             $data['name'] = $x['produk_name'];
             $data['list'] = $x['produk_child'];
             $data['deskripsi'] = $x['produk_deskripsi'];
-            $data['harga'] = 'Rp ' . number_format( $x['produk_harga'], 0, ',', '.' );;
+            $data['harga'] = 'Rp' . number_format( $x['produk_harga'], 0, ',', '.' );
+            $data['img'] = $x['produk_img'];
             $datafix[] = $data;
         }
         echo json_encode( $datafix );
@@ -28,9 +29,17 @@ class Healthcare extends Controller
 
     public function getDataHealthcareByName( $name )
     {
-        $data['data'] = $this->model( 'Healthcare_model' )->getSingleDataHealthcare( $name );
-        
-        echo json_encode( [ 'result' => $data ] );
+        $array = $this->model( 'Get_Data_Produk_model' )->getSingleDataHealthcare( $name );
+        foreach( $array as $x )
+        {
+            $data['name'] = $x['produk_name'];
+            $data['list'] = $x['produk_child'];
+            $data['deskripsi'] = $x['produk_deskripsi'];
+            $data['harga'] = 'Rp' . number_format( $x['produk_harga'], 0, ',', '.' );
+            $data['img'] = $x['produk_img'];
+            $datafix[] = $data;
+        }
+        echo json_encode( $datafix );
         header( 'Content-type: application/json' );
     }
 }
