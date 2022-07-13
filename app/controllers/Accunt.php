@@ -130,7 +130,6 @@ class Accunt extends Controller
             // setcookie( 'username', $cookies['user_name'], time()+1234567890 );
             // setcookie( 'token', $cookies['token'], time()+1234567890 );
             // setcookie( 'role', $cookies['role'], time()+1234567890 );
-
             $alert['data'] = 'sudah login';
             $alert['alert'] = 'success';
             $alert['text'] = 'anda sudah login';

@@ -21,6 +21,7 @@ class Fasilitas extends Controller
             $data['deskripsi'] = $x['produk_deskripsi'];
             $data['harga'] = 'Rp' . number_format( $x['produk_harga'], 0, ',', '.' );
             $data['img'] = $x['produk_img'];
+            $data['id'] = $x['produk_id'];
             $datafix[] = $data;
         }
         echo json_encode( $datafix );
@@ -37,6 +38,7 @@ class Fasilitas extends Controller
             $data['deskripsi'] = $x['produk_deskripsi'];
             $data['harga'] = 'Rp' . number_format( $x['produk_harga'], 0, ',', '.' );
             $data['img'] = $x['produk_img'];
+            $data['id'] = $x['produk_id'];
             $datafix[] = $data;
         }
         echo json_encode( $datafix );

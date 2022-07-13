@@ -29,6 +29,25 @@ class Get_Data_Produk_model
         return $this->db->single();
     }
     
+    public function getAllDataTraining()
+    {
+        $this->db->query( 'SELECT * FROM ' . $this->table . ' WHERE (produk_kategori=:kategori and active=:active) ');
+        $this->db->bind( 'kategori', 2 );
+        $this->db->bind( 'active', 1 );
+        
+        return $this->db->resultSet();
+    }
+    
+    public function getSingleDataTraining( $name )
+    {
+        $this->db->query( 'SELECT * FROM ' . $this->table . ' WHERE (produk_kategori=:kategori and active=:active) AND (produk_name LIKE :name OR produk_child LIKE :name)');
+        $this->db->bind( 'name', '%' . $name . '%' );
+        $this->db->bind( 'kategori', 2 );
+        $this->db->bind( 'active', 1 );
+        
+        return $this->db->single();
+    }
+    
     public function getAllDataFasilitas()
     {
         $this->db->query( 'SELECT * FROM ' . $this->table . ' WHERE (produk_kategori=:kategori and active=:active) ');

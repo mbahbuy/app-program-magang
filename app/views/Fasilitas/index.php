@@ -1,5 +1,4 @@
 <div class="container">
-    <p>ini halaman Fasilitas</p>
     <div id="dataSet"></div>
 </div>
 

@@ -20,13 +20,13 @@
           <a class="nav-link <?php echo ( $data['active'] == 'home' ) ? 'active' : '';?>" href="<?= BASEURL;?>">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <?php echo ( $data['active'] == 'fasilitas' ) ? 'active' : '';?>" href="<?= BASEURL;?>fasilitas">Fasilitas</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link <?php echo ( $data['active'] == 'healthcare' ) ? 'active' : '';?>" href="<?= BASEURL;?>healthcare">Healthcare</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <?php echo ( $data['active'] == 'training' ) ? 'active' : '';?>" href="<?= BASEURL;?>training">Training</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <?php echo ( $data['active'] == 'fasilitas' ) ? 'active' : '';?>" href="<?= BASEURL;?>fasilitas">Fasilitas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link <?php echo ( $data['active'] == 'about' ) ? 'active' : '';?>" href="<?= BASEURL;?>about">About</a>
