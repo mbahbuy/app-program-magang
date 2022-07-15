@@ -60,6 +60,7 @@ class Healthcare extends Controller
     // fungsi controller mendaftar untuk mengambil antrian
     public function getNomorAntrian()
     {
+        // echo json_encode( $_POST );die;
         if( date( 'H:i:s' ) > "15:00:00")
         {
             $alert['alert'] = 'danger';
@@ -87,11 +88,10 @@ class Healthcare extends Controller
                 $this->model( 'Book_model' )->insertNomorAntrian( $inputan );
                 $nomorAntrian = ( $getdata > 0 ) ? $getdata['book_timer'] + 1 : 1 ;
 
-                $alert['data'] = poli( $nomorAntrian ) . " - " . $nomorAntrian ;
+                $alert['data'] = poli( $inputan['pasien_need'] ) . " - " . $nomorAntrian ;
                 $alert['alert'] = 'success';
-                $alert['text'] = 'Data diterima.';
+                $alert['text'] = 'Data diterima. Dengan NIK : ' . $inputan['pasien_nik'];
                 echo json_encode($alert);
-
             }
         }
     }
@@ -100,14 +100,18 @@ class Healthcare extends Controller
 function poli( $tuyul )
 {
     $pemikat = [
-        "01" => "Rapit Test",
-        "02" => "Vaksin",
-        "03" => "Poli Umum",
-        "04" => "Poli Gigi",
-        "05" => "Poli Penyakit Kulit",
-        "06" => "Poli Ibu dan Anak",
-        "07" => "Poli Kangker",
-        "08" => "Poli Psychology",
+       1 => "Medical Check Up Basic",
+       2 => "Vaksin Dosis I",
+       3 => "Vaksin Dosis II",
+       4 => "Vaksin Dosis III",
+       5 => "Rapid Test",
+       6 => "Swap Test",
+       7 => "Test Antigen",
+       8 => "Medical Check Up",
+       9 => "Pemasangan Kawat Gigi",
+       10 => "Penginapan Pasien",
+       11 => "Ambulan",
+       12 => "Medical Check Up"
     ];
     return $pemikat[ $tuyul ];
 }

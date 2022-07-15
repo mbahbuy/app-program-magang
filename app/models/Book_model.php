@@ -13,13 +13,13 @@ class Book_model
     // fungsi pengechekan data antrian yang sudah ada
     public function checkNomorAntrian( $data )
     {
-        $this->db->query( "SELECT * FROM " . $this->table . " WHERE ( tanggal LIKE :tanggal AND book_payment=:nik  AND produk_id=:need ) ");
+        $this->db->query( "SELECT * FROM " . $this->table . " WHERE ( tanggal LIKE :tanggal ) AND ( book_payment=:nik  AND produk_id=:need ) ");
 
         $this->db->bind( 'tanggal', '%' . date( 'Y-m-d' ) . '%' );
         $this->db->bind( 'nik', $data['pasien_nik'] );
         $this->db->bind( 'need', $data['pasien_need'] );
 
-        $this->db->resultSet();
+        return $this->db->single();
     }
 
     // fungsi pengambilan terakhir tersimpan
@@ -30,7 +30,7 @@ class Book_model
         $this->db->bind( 'tanggal', '%' . date( 'Y-m-d' ) . '%' );
         $this->db->bind( 'need', $data['pasien_need'] );
 
-        $this->db->single();
+        return $this->db->single();
     }
 
     public function insertNomorAntrian( $data )

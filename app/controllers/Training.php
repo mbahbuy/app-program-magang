@@ -13,14 +13,20 @@ class Training extends Controller
     }
 
     // halaman training booking
-    public function book( $produk )
+    public function book( $produk = null )
     {
-        $data['judul'] = 'Halaman Training->booking';
-        $data['active'] = 'training';
-        $data['produk'] = $produk;
-        $this->view('templates/header', $data);
-        $this->view('Training/book', $data);
-        $this->view('templates/footer');
+        if( $produk == null )
+        {
+            header( 'location: ' . BASEURL . 'training' );
+        } else
+        {
+            $data['judul'] = 'Halaman Training->booking';
+            $data['active'] = 'training';
+            $data['produk'] = $produk;
+            $this->view('templates/header', $data);
+            $this->view('Training/book', $data);
+            $this->view('templates/footer');
+        }
     }
     
     // halaman training payment

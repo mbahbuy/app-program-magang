@@ -58,7 +58,7 @@ document.getElementById( 'daftarAntrian' ).onclick = function()
         xhttp.send( 
             "pasien_nik=" + pasien_nik +
             "&pasien_need=" + pasien_need +
-            "&pasien_token" + pasien_token
+            "&pasien_token=" + pasien_token
         );
     }
 }
