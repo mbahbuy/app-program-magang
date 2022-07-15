@@ -13,14 +13,20 @@ class Healthcare extends Controller
     }
     
     // tampilan halaman healthcare booking
-    public function book( $produk )
+    public function book( $produk = null )
     {
-        $data['judul'] = 'Halaman Healthcare->booking';
-        $data['active'] = 'healthcare';
-        $data['produk'] = $produk;
-        $this->view('templates/header', $data);
-        $this->view('Healthcare/book', $data);
-        $this->view('templates/footer');
+        if( $produk == null )
+        {
+            header( 'location: ' . BASEURL . 'healthcare' );
+        } else
+        {
+            $data['judul'] = 'Halaman Healthcare->booking';
+            $data['active'] = 'healthcare';
+            $data['produk'] = $produk;
+            $this->view('templates/header', $data);
+            $this->view('Healthcare/book', $data);
+            $this->view('templates/footer');
+        }
     }
 
     public function getDataHealthcare()
