@@ -1,5 +1,7 @@
 <?php
 
+use LDAP\Result;
+
 class Book_model
 {
     private $table = 'book';
@@ -110,6 +112,95 @@ class Book_model
         $this->db->execute();
 
         return $this->db->rowCount();
+    }
+
+    // fungsi check training payment status
+    public function statusPayment( $dataToken )
+    {
+        $this->db->query( 'SELECT book_payment, produk_id FROM ' . $this->table .
+            ' WHERE book_token=:token '
+        );
+
+        $this->db->bind( 'token', "$dataToken" );
+
+        return $this->db->single();
+    }
+
+    // fungsi training active
+    public function payingPayment( $dataToken )
+    {
+        $this->db->query( 'UPDATE ' . $this->table .
+            ' SET book_payment = :payment ' .
+            ' WHERE book_token = :token'
+        );
+
+        $this->db->bind( 'payment', 2 );
+        $this->db->bind( 'token', $dataToken );
+
+        $this->db->execute();
+        return $this->db->rowCount();
+    }
+
+    //fungsi fasilitas booked check
+    public function getFasilitasBooked( $produk, $waktu, $jam )
+    {
+        $this->db->query( 'SELECT * FROM ' . $this->table .
+            ' WHERE produk_id = :produk ' .
+            ' AND book_start LIKE :time ' .
+            ' AND book_timer = :jam' .
+            ' AND ( NOT book_payment = :satu OR NOT book_payment = :dua )' 
+        );
+
+        $this->db->bind( 'produk', $produk );
+        $this->db->bind( 'time', "%$waktu%" );
+        $this->db->bind( 'jam', "$jam" );
+        $this->db->bind( 'satu', "1" );
+        $this->db->bind( 'dua', "2" );
+
+        return $this->db->single();
+    }
+
+    // fungsi check data doble
+    public function checkFasilitasDoubleData( $produk, $waktu, $jam )
+    {
+        $this->db->query( 'SELECT * FROM ' . $this->table .
+            ' WHERE produk_id = :produk ' .
+            ' AND book_start = :time ' .
+            ' AND book_timer = :jam ' 
+        );
+
+        $this->db->bind( 'produk', $produk );
+        $this->db->bind( 'time', $waktu );
+        $this->db->bind( 'jam', $jam );
+
+        $this->db->execute();
+        return $this->db->rowCount();
+    }
+
+    // fungsi fasilitas insert data to DB
+    public function insertBookFasilitas( $data, $token )
+    {
+        $this->db->query( 'INSERT INTO ' . $this->table . '( user_token, produk_id, book_timer, book_start, book_token, book_payment )' . 
+            ' VALUES ( 
+                :userToken,
+                :produkID,
+                :book_timer,
+                :book_start,
+                :book_token,
+                :book_payment
+            )'
+        );
+
+        $this->db->bind( 'userToken', $data['user_token'] );
+        $this->db->bind( 'produkID', $data['produk_id'] );
+        $this->db->bind( 'book_timer', $data['book_timer'] );
+        $this->db->bind( 'book_start', $data['book_start'] );
+        $this->db->bind( 'book_token', $token );
+        $this->db->bind( 'book_payment', 1 );
+
+        $this->db->execute();
+        return $this->db->rowCount();
+
     }
 
 }

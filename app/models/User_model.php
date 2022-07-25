@@ -83,12 +83,49 @@ class User_model {
     }
 
     // fungsi setcookie
-    // public function setCookie( $cookieName, $cookieValue )
-    // {
-    //     setcookie( $cookieName, $cookieValue, ['samesite' => 'Lax']);
-    //     setcookie( $cookieName, $cookieValue, ['samesite' => 'None', 'secure' => true]);
-    //     header('Set-Cookie: ' . $cookieName . '=' . $cookieValue . '; SameSite=Lax', false);
-    //     header('Set-Cookie: ' . $cookieName . '=' . $cookieValue . '; SameSite=None; Secure', false);
+    // public function setCookie( $cookiesName, $cookiesValue ){
+    //     $arr_cookie_options = array (
+    //         'Expires' => time() + 60*60*24*30,
+    //         'Path' => '/',
+    //         // 'Domain' => BASEURL, // leading dot for compatibility or use subdomain
+    //         'Secure' => 'true',     // or false
+    //         'HttpOnly' => 'true',    // or false
+    //         'SameSite' => 'None' // None || Lax  || Strict
+    //         );
+    //     return setcookie( $cookiesName, $cookiesValue, $arr_cookie_options);
     // }
+    
+    // fungsi setsession
+    public function setSession( $data )
+    {
+        $_SESSION['username'] = $data['username'];
+        $_SESSION['token'] = $data['token'];
+        $_SESSION['role'] = $data['role'];
+    }
 
+    public function getDataRole( $token )
+    {
+        $this->db->query( 'SELECT  role FROM ' . $this->table . ' WHERE token = :token' );
+        $this->db->bind( "token", $token );
+
+        return $this->db->single();
+    }
+
+    // fungsi read session
+    public function getSession()
+    {
+        $data['username'] = $_SESSION['username'];
+        $data['token'] = $_SESSION['token'];
+        $datarole = $this->getDataCookies( $data['token'] );
+        $data['role'] = base64_encode(hash_hmac('sha256', $datarole['role'], $_SESSION['role'], true));
+
+        $result[] = $data;
+        return $result;
+    }
+
+    // fungsi delete sission
+    public function removeSession()
+    {
+        session_destroy();
+    }
 }

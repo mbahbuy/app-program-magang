@@ -30,14 +30,93 @@ class Training extends Controller
     }
     
     // halaman training payment
-    public function payment( $payment )
+    public function payment( $payment = null )
     {
-        $data['judul'] = 'Halaman Training->booking';
-        $data['active'] = 'training';
-        $data['paymentToken'] = $payment;
-        $this->view('templates/header', $data);
-        $this->view('Training/payment', $data);
-        $this->view('templates/footer');
+        if( $payment == null )
+        {
+            header( 'location: ' . BASEURL . 'training' );
+        } else 
+        {
+            $data['judul'] = 'Halaman Training->booking';
+            $data['active'] = 'training';
+            $data['paymentToken'] = $payment;
+            $status = $this->model( 'Book_model' )->statusPayment( $payment );
+            $data['paymentStatus'] = $status['book_payment'];
+            $data['produk_id'] = $status['produk_id'];
+            $this->view('templates/header', $data);
+            $this->view('Training/payment', $data);
+            $this->view('templates/footer');
+        }
+    }
+
+    // function upload bukti payment
+    public function payPayment()
+    {
+        $target_dir = 'public/img/';
+        $target_file = $target_dir . basename($_FILES["filePayment"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+        // Check if image file is a actual image or fake image
+
+        $check = getimagesize($_FILES["filePayment"]["tmp_name"]);
+        if($check !== false) {
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
+
+        // Check if file already exists
+        if (file_exists($target_file)) {
+        $uploadOk = 0;
+        }
+
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+        $uploadOk = 0;
+        }
+
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo '
+            <div class="container">
+
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Foto bukti corupt/bukan gambar.
+                    <a href="' . BASEURL . '/training">Kembali Ke Training book</a>
+                </div>
+
+            </div>
+            ';
+        // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["filePayment"]["tmp_name"], $target_file)) {
+                $this->model( 'Book_model' )->payingPayment( $_POST['paymentToken'] );
+                echo '
+                    <div class="container">
+        
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Pendaftaran pelatihan berhasil. Silakan belajar dengan giat.
+                            <a href="' . BASEURL . '/training">Kembali Ke Training book</a>
+                        </div>
+        
+                    </div>
+                ';
+            } else {
+                echo '
+                    <div class="container">
+        
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Tempat uplaod file tidak ada.
+                        <a href="' . BASEURL . '/training">Kembali Ke Training book</a>
+                        </div>
+        
+                    </div>
+                ';
+            }
+        }
     }
 
     public function getDataTraining()
@@ -98,7 +177,7 @@ class Training extends Controller
         ;
 
         // Token pendaftaran
-        $dataToken = hash( 'sha256', $_POST['pelanggan'] . md5( date( 'Y-m-d' ) ) );
+        $dataToken = hash( 'sha256', $_POST['pelanggan'] . $_POST['training'] . md5( date( 'Y-m-d' ) ) );
         $check = $this->model( 'Book_model' )->checkDataTraining( $_POST, $datastart, $dataend );
 
         if( $check > 0 )

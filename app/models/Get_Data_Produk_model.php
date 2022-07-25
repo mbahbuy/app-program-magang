@@ -66,4 +66,14 @@ class Get_Data_Produk_model
         
         return $this->db->single();
     }
+
+    public function getNameFasilitasProduk( $id )
+    {
+        $this->db->query( 'SELECT produk_name FROM ' . $this->table .
+            ' WHERE produk_id = :id'
+        );
+
+        $this->db->bind( 'id', $id );
+        return $this->db->single();
+    }
 }

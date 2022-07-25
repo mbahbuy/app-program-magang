@@ -6,15 +6,16 @@ class Accunt extends Controller
 {
     public function index()
     {
-        if( isset( $_COOKIE['username'] ) && isset( $_COOKIE['token'] ) && isset( $_COOKIE['role'] ) )
+        // echo json_encode($_SESSION);die;
+        if( !empty( $_SESSION['username'] ) && !empty( $_SESSION['token'] ) && !empty( $_SESSION['role'] ) )
         {
-            if( $this->model( 'User_model' )->checkAccunt( $_COOKIE['token'] ) > 0 )
+            if( $this->model( 'User_model' )->checkAccunt( $_SESSION['token'] ) > 0 )
             {
                 $data['judul'] = 'Halaman Accunt';
                 $data['active'] = 'accunt';
-                $data['username'] = $_COOKIE['username'];
-                $data['token'] = $_COOKIE['token'];
-                $data['role'] = $_COOKIE['role'];
+                $data['username'] = $_SESSION['username'];
+                $data['token'] = $_SESSION['token'];
+                $data['role'] = $_SESSION['role'];
                 $this->view('templates/header', $data);
                 $this->view('Accunt/setting', $data);
                 $this->view('templates/footer');
@@ -24,11 +25,8 @@ class Accunt extends Controller
         } else {
             $data['judul'] = 'Halaman Accunt';
             $data['active'] = 'accunt';
-            $data['username'] = $_COOKIE['username'];
-            $data['token'] = $_COOKIE['token'];
-            $data['role'] = $_COOKIE['role'];
             $this->view('templates/header', $data);
-            $this->view('Accunt/index', $data);
+            $this->view('Accunt/index');
             $this->view('templates/footer');
         }
     }
@@ -117,19 +115,11 @@ class Accunt extends Controller
         $datapass = $this->model( 'User_model' )->getPasswordAccunt( $_POST );
         if( password_verify( $_POST['password'], $datapass['pass'] ) )
         {
-            $cookies = $this->model( 'User_model' )->getDataCookies( $datapass['pass'] );
-            // setcookie( 'username', $cookies['user_name'], ['samesite' => 'None', 'secure' => true] );
-            // setcookie( 'token', $cookies['token'], ['samesite' => 'None', 'secure' => true] );
-            // setcookie( 'role', $cookies['role'], ['samesite' => 'None', 'secure' => true] );
-            // header('Set-Cookie: username=' . $cookies['user_name'] . '; SameSite=None; Secure', false);
-            // header('Set-Cookie: token=' . $cookies['token'] . '; SameSite=None; Secure', false);
-            // header('Set-Cookie: role=' . $cookies['role'] . '; SameSite=None; Secure', false);
-            // setCookie( 'username', $cookies['user_name'] );
-            // setCookie( 'token', $cookies['token'] );
-            // setCookie( 'role', $cookies['role'] );
-            // setcookie( 'username', $cookies['user_name'], time()+1234567890 );
-            // setcookie( 'token', $cookies['token'], time()+1234567890 );
-            // setcookie( 'role', $cookies['role'], time()+1234567890 );
+            $session = $this->model( 'User_model' )->getDataCookies( $datapass['pass'] );
+            $data['username'] = $session['user_name'];
+            $data['token'] = $session['token'];
+            $data['role'] = hash( 'sha256', $session['role'] );
+            $this->model( 'User_model' )->setSession( $data );
             $alert['data'] = 'sudah login';
             $alert['alert'] = 'success';
             $alert['text'] = 'anda sudah login';

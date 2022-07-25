@@ -16,10 +16,6 @@
 
             <button type="button" class="btn btn-primary" id="login">Log In</button>
 
-            <p>ada accunt dengan username : <?= $data['username'];?></p>
-            <p>ada accunt dengan token : <?= $data['token'];?></p>
-            <p>ada accunt dengan role : <?= $data['role'];?></p>
-
         </div>
 
         <div class="col">
@@ -139,7 +135,8 @@ document.getElementById( 'login' ).onclick = function()
         if( this.readyState == 4 && this.status == 200 )
         {
             var dataphp = JSON.parse(this.responseText);
-            // notifLogin( dataphp.data, dataphp.alert, dataphp.text );
+            notifLogin( dataphp.data, dataphp.alert, dataphp.text );
+            location.href = '<?= BASEURL;?>accunt';
             // alert( this.responseText );
         };
     };
