@@ -128,4 +128,19 @@ class User_model {
     {
         session_destroy();
     }
+
+    // fungsi ganti password
+    public function updatePass( $data )
+    {
+        $this->db->query( 'UPDATE ' . $this->table . 
+            ' SET pass = :pass' . 
+            ' WHERE token = :token'
+        );
+
+        $this->db->bind( 'pass', password_hash( $data['pass'], PASSWORD_DEFAULT));
+        $this->db->bind( 'token', $data['token'] );
+
+        $this->db->execute();
+        return $this->db->rowCount();
+    }
 }

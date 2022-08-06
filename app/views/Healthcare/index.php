@@ -18,7 +18,7 @@ function dataSet( dataJson = null )
                 // console.log( JSONdata[i] );
                 let dataArray = document.createElement( 'div' );
                 dataArray.className = "card mt-4";
-                dataArray.innerHTML = "<div class='card-header'>" + JSONdata[i].list + "</div><div class='card-body'><h5 class='card-title'>" + JSONdata[i].name + "</h5><p class='card-text'>" + JSONdata[i].deskripsi + "</p><a href='<?= BASEURL;?>healthcare/book/" + JSONdata[i].id + "' class='btn btn-primary'>(+-) " + JSONdata[i].harga + "</a></div>";
+                dataArray.innerHTML = "<div class='card-header'>" + JSONdata[i].list + "</div><div class='card-body'><h5 class='card-title'>" + JSONdata[i].name + "</h5><p class='card-text'>" + JSONdata[i].deskripsi + "<img class='img-thumbnail' src='" + JSONdata[i].img + "'></p><a href='<?= BASEURL;?>healthcare/book/" + JSONdata[i].id + "' class='btn btn-primary'>(+-) " + JSONdata[i].harga + "</a></div>";
                 tempatTampilan.appendChild( dataArray );
 
             };
@@ -38,7 +38,7 @@ function dataSet( dataJson = null )
                     // console.log( JSONdata[i] );
                     let dataArray = document.createElement( 'div' );
                     dataArray.className = "card mt-4";
-                    dataArray.innerHTML = "<div class='card-header'>" + JSONdata[i].list + "</div><div class='card-body'><h5 class='card-title'>" + JSONdata[i].name + "</h5><p class='card-text'>" + JSONdata[i].deskripsi + "</p><a href='<?= BASEURL;?>healthcare/book/" + JSONdata[i].id + "' class='btn btn-primary'>(+-) " + JSONdata[i].harga + "</a></div>";
+                    dataArray.innerHTML = "<div class='card-header'>" + JSONdata[i].list + "</div><div class='card-body'><h5 class='card-title'>" + JSONdata[i].name + "</h5><p class='card-text'>" + JSONdata[i].deskripsi + "<img class='img-thumbnail' src='" + JSONdata[i].img + "'></p><a href='<?= BASEURL;?>healthcare/book/" + JSONdata[i].id + "' class='btn btn-primary'>(+-) " + JSONdata[i].harga + "</a></div>";
                     tempatTampilan.appendChild( dataArray );
 
                 };

@@ -15,17 +15,23 @@ class Healthcare extends Controller
     // tampilan halaman healthcare booking
     public function book( $produk = null )
     {
-        if( $produk == null )
+        if( isset($_SESSION['username']) )
         {
+            if( $produk == null )
+            {
+                header( 'location: ' . BASEURL . 'healthcare' );
+            } else
+            {
+                $data['judul'] = 'Halaman Healthcare->booking';
+                $data['active'] = 'healthcare';
+                $data['pengguna'] = $_SESSION['token'];
+                $data['produk'] = $produk;
+                $this->view('templates/header', $data);
+                $this->view('Healthcare/book', $data);
+                $this->view('templates/footer');
+            }
+        } else {
             header( 'location: ' . BASEURL . 'healthcare' );
-        } else
-        {
-            $data['judul'] = 'Halaman Healthcare->booking';
-            $data['active'] = 'healthcare';
-            $data['produk'] = $produk;
-            $this->view('templates/header', $data);
-            $this->view('Healthcare/book', $data);
-            $this->view('templates/footer');
         }
     }
 

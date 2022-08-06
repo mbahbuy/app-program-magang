@@ -16,7 +16,7 @@
 
 const tempat = document.getElementById( 'tempatTime' );
 const timeBooking = document.getElementById( 'dateBook' );
-const user_token = 'iguiewf7ewfiuewhf98hiu4h8n4n984f4f894jf94';
+const user_token = "<?= $data['pengguna'];?>";// diambil dari cookie[token] bila sudah login
 const produk = '<?= $data['produk'];?>';
 
 function autoTime( satu = null, dua = null, tiga = null )

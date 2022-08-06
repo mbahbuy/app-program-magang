@@ -6,12 +6,13 @@
 
             <h2 class="mb-3">Log In :</h2>    
 
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" id="user-email-login" placeholder="Username/Email" required>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="user-email-login" placeholder="name@example.com">
+                <label for="user-email-login">Email/Username</label>
             </div>
-
-            <div class="input-group mb-3">
-                <input type="password" class="form-control" id="password-login" placeholder="Password" required>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password-login" placeholder="Password">
+                <label for="password-login">Password</label>
             </div>
 
             <button type="button" class="btn btn-primary" id="login">Log In</button>
@@ -61,6 +62,7 @@
 <div id="notif"></div>
 
 <script>
+
 function notifLogin( data = null, alert = 'danger', texts = '' )
 {
     if( data == null )
@@ -74,6 +76,7 @@ function notifLogin( data = null, alert = 'danger', texts = '' )
         location.href = '<?= BASEURL;?>';
     }
 };
+
 function notif( data = null, alert = 'danger', texts = '' )
 {
     if( data == null )

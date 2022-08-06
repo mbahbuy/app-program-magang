@@ -68,7 +68,7 @@ document.getElementById( 'book' ).onclick = function()
     var trainingStart = document.getElementById( 'trainingStart' ).value;
     var trainingTime = document.getElementById( 'trainingTime' ).value;
     var training = "<?= $data['produk'];?>";// diambil dari data controller
-    var pelanggan = "91aa274811fca745e8e7b6e8ee9fbc3adc4fdde06826fe1dcf8ef0296adfc9de";// diambil dari cookie[token] bila sudah login
+    var pelanggan = "<?= $data['pengguna'];?>";// diambil dari cookie[token] bila sudah login
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function(){
         if( this.readyState == 4 && this.status == 200 ){

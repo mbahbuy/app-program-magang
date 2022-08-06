@@ -15,17 +15,24 @@ class Fasilitas extends Controller
     // halaman fasilitas booking
     public function book( $produk = null )
     {
-        if( $produk == null )
+        if( isset( $_SESSION['username'] ) )
         {
-            header( 'location: ' . BASEURL . 'fasilitas' );
+            if( $produk == null )
+            {
+                header( 'location: ' . BASEURL . 'fasilitas' );
+            } else
+            {
+                $data['judul'] = 'Halaman Fasilitas';
+                $data['active'] = 'fasilitas';
+                $data['pengguna'] = $_SESSION['token'];
+                $data['produk'] = $produk;
+                $this->view('templates/header', $data);
+                $this->view('Fasilitas/book', $data);
+                $this->view('templates/footer');
+            }
         } else
         {
-            $data['judul'] = 'Halaman Fasilitas';
-            $data['active'] = 'fasilitas';
-            $data['produk'] = $produk;
-            $this->view('templates/header', $data);
-            $this->view('Fasilitas/book', $data);
-            $this->view('templates/footer');
+            header( 'location: ' . BASEURL . 'healthcare' );
         }
     }
 
@@ -94,7 +101,7 @@ class Fasilitas extends Controller
             } else {
                 if (move_uploaded_file($_FILES["filePayment"]["tmp_name"], $target_file)) {
                     $this->model( 'Book_model' )->payingPayment( $_POST['paymentToken'] );
-                    $nameProduk = $this->model( 'Get_Data_Produk_model' )->getNameFasilitasProduk($_POST['produk_id']);
+                    $nameProduk = $this->model( 'Get_Data_Produk_model' )->getSingleDataProdukById($_POST['produk_id']);
                     $namaProduk = $nameProduk['produk_name'];
                     echo '
                         <div class="container">
@@ -211,7 +218,7 @@ class Fasilitas extends Controller
                                 $token = hash( 'sha256', $_POST['user_token'] . $_POST['produk_id'] . $_POST['book_timer'] . md5( date( 'Y-m-d' ) ) );
                                 if( $this->model( 'Book_model' )->insertBookFasilitas( $_POST, $token ) > 0 )
                                 {
-                                    $nameProduk = $this->model( 'Get_Data_Produk_model' )->getNameFasilitasProduk($_POST['produk_id']);
+                                    $nameProduk = $this->model( 'Get_Data_Produk_model' )->getSingleDataProdukById($_POST['produk_id']);
                                     $namaProduk = $nameProduk['produk_name'];
                                     $alert['data'] = BASEURL . 'fasilitas/payment/' . $token;
                                     $alert['alert'] = 'success';

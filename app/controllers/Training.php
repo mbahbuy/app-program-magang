@@ -15,17 +15,24 @@ class Training extends Controller
     // halaman training booking
     public function book( $produk = null )
     {
-        if( $produk == null )
+        if( isset( $_SESSION['username'] ) )
         {
-            header( 'location: ' . BASEURL . 'training' );
+            if( $produk == null )
+            {
+                header( 'location: ' . BASEURL . 'training' );
+            } else
+            {
+                $data['judul'] = 'Halaman Training->booking';
+                $data['active'] = 'training';
+                $data['pengguna'] = $_SESSION['token'];
+                $data['produk'] = $produk;
+                $this->view('templates/header', $data);
+                $this->view('Training/book', $data);
+                $this->view('templates/footer');
+            }
         } else
         {
-            $data['judul'] = 'Halaman Training->booking';
-            $data['active'] = 'training';
-            $data['produk'] = $produk;
-            $this->view('templates/header', $data);
-            $this->view('Training/book', $data);
-            $this->view('templates/footer');
+            header( 'location: ' . BASEURL . 'healthcare' );
         }
     }
     
