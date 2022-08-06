@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman <?= $data['judul'];?></title>
     <link rel="stylesheet" href="<?= BASEURL;?>public/css/bootstrap.css">
-    <link rel="stylesheet" href="public/css/setting.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
